@@ -301,7 +301,7 @@ func execOnNodeWithOutputOrFail(node *corev1.Node, cmd string) *e2essh.Result {
 	var out *e2essh.Result
 	var err error
 	waitErr := wait.PollImmediate(5*time.Second, defaultSSHTimeout, func() (bool, error) {
-		out, err = e2essh.IssueSSHCommandWithResult(cmd, e2e.TestContext.Provider, node)
+		out, err = e2essh.IssueSSHCommandWithResult(context.Background(), cmd, e2e.TestContext.Provider, node)
 		// IssueSSHCommandWithResult logs output
 		if err != nil {
 			e2e.Logf("Failed to exec cmd [%s] on node %s: %v", cmd, node.Name, err)
@@ -334,7 +334,7 @@ func checkSSH(node *corev1.Node) {
 }
 
 func ssh(cmd string, node *corev1.Node) (*e2essh.Result, error) {
-	return e2essh.IssueSSHCommandWithResult(cmd, e2e.TestContext.Provider, node)
+	return e2essh.IssueSSHCommandWithResult(context.Background(), cmd, e2e.TestContext.Provider, node)
 }
 
 // InstallSSHKeyOnControlPlaneNodes will create a new private/public ssh keypair,
