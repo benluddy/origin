@@ -16,6 +16,7 @@ import (
 	"k8s.io/kubernetes/test/e2e/framework"
 	e2epod "k8s.io/kubernetes/test/e2e/framework/pod"
 	imageutils "k8s.io/kubernetes/test/utils/image"
+	"k8s.io/utils/pointer"
 )
 
 var _ = g.Describe("[sig-api-machinery][Feature:Audit] Basic audit", func() {
@@ -30,9 +31,21 @@ var _ = g.Describe("[sig-api-machinery][Feature:Audit] Basic audit", func() {
 				Name: "audit-pod",
 			},
 			Spec: apiv1.PodSpec{
+				SecurityContext: &apiv1.PodSecurityContext{
+					RunAsNonRoot: pointer.Bool(true),
+					SeccompProfile: &apiv1.SeccompProfile{
+						Type: apiv1.SeccompProfileTypeRuntimeDefault,
+					},
+				},
 				Containers: []apiv1.Container{{
 					Name:  "pause",
 					Image: imageutils.GetPauseImageName(),
+					SecurityContext: &apiv1.SecurityContext{
+						AllowPrivilegeEscalation: pointer.Bool(false),
+						Capabilities: &apiv1.Capabilities{
+							Drop: []apiv1.Capability{"ALL"},
+						},
+					},
 				}},
 			},
 		}
