@@ -57,6 +57,14 @@ var (
 			// https://issues.redhat.com/browse/OCPBUGS-11652
 			`\[sig-cli\] oc adm node-logs`,
 		},
+		// tests that need to be temporarily disabled while the rebase is in progress.
+		"[Disabled:RebaseInProgress]": {
+			`\[Feature:NetworkPolicy\]`, // SDN team is looking into it
+			`\[sig-api-machinery\] Aggregator Should be able to support the 1.17 Sample API Server using the current Aggregator`,                              // apiserver-team is looking into this
+			`\[sig-api-machinery\] OpenAPIV3 should contain OpenAPI V3 for Aggregated APIServer`,                                                              // apiserver-team is looking into this
+			`\[sig-api-machinery\]\[Feature:Audit\] Basic audit should audit API calls`,                                                                       // apiserver-team is looking into this
+			`\[sig-autoscaling\] \[Feature:HPA\] Horizontal pod autoscaling (scale resource: CPU) CustomResourceDefinition Should scale with a CRD targetRef`, // node-team is looking into this
+		},
 		// tests that may work, but we don't support them
 		"[Disabled:Unsupported]": {},
 		// tests too slow to be part of conformance
